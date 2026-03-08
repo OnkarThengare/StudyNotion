@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const otpGenerateor = require("otp-generator");
+const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailSender = require("../utils/mailSender");
@@ -9,24 +9,31 @@ const Profile = require("../models/Profile");
 require("dotenv").config();
 
 // Send OTP
-exports.sendOTP = async (req, res) => {
+exports.sendOtp = async (req, res) => {
     try {
         // fetch email from request ki body
         const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is Required",
+            })
+        }
 
         // check if user already exist
         const checkUserPresent = await User.findOne({ email });
 
         // if user already exist then return a response
         if (checkUserPresent) {
-            return res.status(401).json({
+            return res.status(400).json({
                 success: false,
                 message: 'User already registered',
             })
         }
 
         // Generate OTP     --- BAD Code Practice
-        let otp = otpGenerateor.generate(6, {
+        let otp = otpGenerator.generate(6, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
             specialChars: false,
@@ -41,7 +48,7 @@ exports.sendOTP = async (req, res) => {
         console.log("Result", result);
 
         while (result) {
-            otp.otpGenerateor(6, {
+            otp = otpGenerator.generate(6, {
                 upperCaseAlphabets: false,
                 lowerCaseAlphabets: false,
                 specialChars: false,
@@ -55,8 +62,9 @@ exports.sendOTP = async (req, res) => {
         const otpPayload = { email, otp };
 
         // create an entry in DB  for otp
-        const otpBody = await OTP.create(otpPayload);
-        console.log(otpBody);
+        // const otpBody = await OTP.create(otpPayload);
+        await OTP.create(otpPayload);
+        // console.log(otpBody);
 
         // return respons successful
         res.status(200).json({
@@ -203,7 +211,8 @@ exports.login = async (req, res) => {
         }
 
         // Generate JWT, after password matching
-        if (await bcrypt.compare(password, user.password)) {
+        const isPasswordMatch = await bcrypt.compare(password, user.password)
+        if (isPasswordMatch) {
 
             const payload = {
                 email: user.email,

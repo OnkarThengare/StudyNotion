@@ -20,10 +20,12 @@ export function sendOtp(email, navigate) {
     dispatch(setLoading(true))
 
     try {
+
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
-        checkUserPassword: true,
+        // checkUserPassword: true,  // Not Need
       })
+
       console.log("SENDOTP API RESPONSE......", response)
 
       console.log(response.data.success)
