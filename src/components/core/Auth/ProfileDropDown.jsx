@@ -5,8 +5,8 @@ import { AiOutlineCaretDown } from "react-icons/ai";
 import { VscDashboard, VscSignOut } from 'react-icons/vsc';
 import { Link } from 'react-router-dom';
 
-// import { logout } from "../../../services/operations/authAPI"
-// import useOnClickOutside from "../../../"
+import { logout } from "../../../services/operations/authAPI"
+import useOnClickOutside from "../../../hooks/useOnClickOutside"
 
 
 export default function ProfileDropDown() {
@@ -17,12 +17,12 @@ export default function ProfileDropDown() {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
 
-    // useOnClickOutside(ref, () => setOpen(false))
+    useOnClickOutside(ref, () => setOpen(false))
 
     if (!user) return null
 
     return (
-        <button className='relative' onClick={() => setOpen(true)}>
+        <button className='relative' onClick={() => setOpen((prev) => !prev)}>
             <div className='flex items-center gap-x-1'>
                 <img
                     src={user?.image}
@@ -43,7 +43,7 @@ export default function ProfileDropDown() {
                     >
 
                         <Link to="/dashboard/my-profile" onClick={() => setOpen(false)}>
-                            <div className='flex w-full items-center gap-x-1 py-[10px] text-sm text-richblack-100 hover: bg-richblack-700 hover:text-richblack-25'>
+                            <div className='flex w-full items-center gap-x-1 py-[10px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25'>
 
                                 <VscDashboard className='text-lg' />
                                 Dashboard
@@ -52,10 +52,10 @@ export default function ProfileDropDown() {
 
                         <div
                             onClick={() => {
-                                // dispatch(logout(navigate))
+                                dispatch(logout(navigate))
                                 setOpen(false)
                             }}
-                            className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25" F
+                            className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
                         >
                             <VscSignOut className='text-lg' />
                             Logout

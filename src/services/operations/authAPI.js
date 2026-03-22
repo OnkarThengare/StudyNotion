@@ -5,12 +5,13 @@ import { resetCart } from '../../slices/cartSlice'
 import { setUser } from "../../slices/profileSlice"
 import { apiConnector } from '../apiconnector'
 import { endpoints } from "../apis"
+import { useNavigate } from 'react-router-dom';
 
 const {
   SENDOTP_API,
   SIGNUP_API,
   LOGIN_API,
-  RESETPASSTOKEN_API,
+  RESET_PASSWORD_TOKEN_API,
   RESETPASSWORD_API
 } = endpoints
 
@@ -35,10 +36,10 @@ export function sendOtp(email, navigate) {
       }
 
       toast.success("Otp Send Successfully.")
-      navigate("/verify-email")
+      navigate("/verify-email") 
 
     } catch (error) {
-      console.log("sendOtp error:", error.response?.data || error.message);
+      console.log("sendOtp  error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Could not send OTP");
     }
 
@@ -127,61 +128,6 @@ export function login(email, password, navigate) {
 }
 
 
-
-export function getPasswordResetToken(email, setEmailSent) {
-  return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
-    try {
-      const response = await apiConnector("POST", RESETPASSTOKEN_API, {
-        email,
-      })
-
-      console.log("RESETPASSTOKEN RESPONSE............", response)
-
-      if (!response.data.success) {
-        throw new Error(response.data.message)
-      }
-
-      toast.success("Reset Email Sent")
-      setEmailSent(true)
-    } catch (error) {
-      console.log("RESETPASSTOKEN ERROR............", error)
-      toast.error("Failed To Send Reset Email")
-    }
-    toast.dismiss(toastId)
-    dispatch(setLoading(false))
-  }
-}
-
-export function resetPassword(password, confirmPassword, token, navigate) {
-  return async (dispatch) => {
-    const toastId = toast.loading("Loading...")
-    dispatch(setLoading(true))
-    try {
-      const response = await apiConnector("POST", RESETPASSWORD_API, {
-        password,
-        confirmPassword,
-        token,
-      })
-
-      console.log("RESETPASSWORD RESPONSE............", response)
-
-      if (!response.data.success) {
-        throw new Error(response.data.message)
-      }
-
-      toast.success("Password Reset Successfully")
-      navigate("/login")
-    } catch (error) {
-      console.log("RESETPASSWORD ERROR............", error)
-      toast.error("Failed To Reset Password")
-    }
-    toast.dismiss(toastId)
-    dispatch(setLoading(false))
-  }
-}
-
 export function logout(navigate) {
   return (dispatch) => {
     dispatch(setToken(null))
@@ -190,6 +136,60 @@ export function logout(navigate) {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     toast.success("Logged Out")
-    navigate("/")
+    navigate("/") 
   }
 }
+
+
+export function getPasswordResetToken(email, setEmailSent) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading...")
+    dispatch(setLoading(true));
+    try {
+      // Isme Bass Backend se Call Mar Raha Haii...
+      const response = await apiConnector("POST", RESET_PASSWORD_TOKEN_API, { email })
+
+      console.log("RESET PASSWORD TOKEN RESPONSE...", response);
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("Reset Email Sent");
+      setEmailSent(true);
+    }
+    catch (error) {
+      console.log("RESET PASSWORD TOKEN ERROR", error);
+      toast.error("Failed To Send Reset Email")
+    }
+    toast.dismiss(toastId)
+    dispatch(setLoading(false));
+  }
+}
+
+export function resetPassword(password, confirmPassword, token) {
+  // const navigate = useNavigate();
+
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading...")
+    dispatch(setLoading(true));
+    try {
+      //  API Call
+      const response = await apiConnector("POST", RESETPASSWORD_API, { password, confirmPassword, token });
+
+      console.log("RESET Password Response...", response);
+
+      if (!response.data.success) {
+        throw new Error(response.data.message);
+      }
+
+      toast.success("Password has been reset Successfully");
+      // navigate("/login")
+    } catch (error) {
+      console.log("RESET PASSWORD TOKEN ERROR", error);
+      toast.error("Failed To Reset Password");
+    }
+    toast.dismiss(toastId)
+    dispatch(setLoading(true));
+  }
+} 

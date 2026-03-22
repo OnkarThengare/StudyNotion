@@ -186,7 +186,7 @@ function SignupForm() {
 
                         <input
                             required
-                            type={showPassword ? "text" : "password"}
+                            type={showConfirmPassword ? "text" : "password"}
                             name="confirmPassword"
                             value={confirmPassword}
                             onChange={handleOnChange}
@@ -200,7 +200,7 @@ function SignupForm() {
                         />
 
                         <span
-                            onClick={() => setShowPassword((prev) => !prev)}
+                            onClick={() => setShowConfirmPassword((prev) => !prev)}
                             className="absolute right-3 top-[38px] z-[10] cursor-pointer"
                         >
                             {
