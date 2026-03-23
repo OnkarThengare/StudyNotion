@@ -10,16 +10,16 @@ import { apiConnector } from '../../services/apiconnector';
 import { categories } from '../../services/apis';
 import { IoIosArrowDown } from "react-icons/io";
 
-// const subLinks = [
-//     {
-//         title: "python",
-//         link: "/catalog/python",
-//     },
-//     {
-//         title: "web dev",
-//         link: "/catalog/web-development "
-//     }
-// ]
+const subLinks = [
+    {
+        title: "python",
+        link: "/catalog/python",
+    },
+    {
+        title: "web dev",
+        link: "/catalog/web-development "
+    }
+]
 
 const Navbar = () => {
 
@@ -115,7 +115,7 @@ const Navbar = () => {
                     </ul>
                 </nav>
 
-                {/* Login & Signup & Dashboard*/}
+                {/* Login / Signup / Dashboard*/}
                 <div className='flex gap-x-4 items-center'>
                     {
                         user && user?.accountType !== "Instructor" && (
@@ -133,7 +133,7 @@ const Navbar = () => {
                     }
 
                     {
-                        token === null && (
+                        token == null && (
                             <Link to="/login">
                                 <button className='border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md'>
                                     Log in
@@ -143,7 +143,7 @@ const Navbar = () => {
                     }
 
                     {
-                        token === null && (
+                        token == null && (
                             <Link to="/signup">
                                 <button className='border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md'>
                                     Sign Up
@@ -154,7 +154,6 @@ const Navbar = () => {
 
                     {
                         token !== null && <ProfileDropDown />
-
                     }
                 </div>
 

@@ -12,7 +12,7 @@ const {
   SIGNUP_API,
   LOGIN_API,
   RESET_PASSWORD_TOKEN_API,
-  RESETPASSWORD_API
+  RESETPASSWORD_API,
 } = endpoints
 
 export function sendOtp(email, navigate) {
@@ -36,9 +36,10 @@ export function sendOtp(email, navigate) {
       }
 
       toast.success("Otp Send Successfully.")
-      navigate("/verify-email") 
+      navigate("/verify-email")
 
-    } catch (error) {
+    } 
+    catch (error) {
       console.log("sendOtp  error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Could not send OTP");
     }
@@ -116,9 +117,13 @@ export function login(email, password, navigate) {
         ? response.data.user.image
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.user.firstName} ${response.data.user.lastName}`
       dispatch(setUser({ ...response.data.user, image: userImage }))
+      
       localStorage.setItem("token", JSON.stringify(response.data.token))
-      navigate("/dashboard/my-profile")
-    } catch (error) {
+
+      navigate("/dashboard/my-profile");
+
+    } 
+    catch (error) {
       console.log("LOGIN API ERROR............", error)
       toast.error("Login Failed")
     }
@@ -136,7 +141,7 @@ export function logout(navigate) {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
     toast.success("Logged Out")
-    navigate("/") 
+    navigate("/")
   }
 }
 
