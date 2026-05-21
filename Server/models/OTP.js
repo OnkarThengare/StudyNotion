@@ -27,12 +27,10 @@ async function sendVerificationEmail(email, otp) {
             "verification Email from StudyNotion",
             otpTemplate(otp)
         );
-        if (mailResponse) {
-            console.log("Email sent successfully"); //If mail fails → mailResponse is null → 💥 crash
-        }
+        console.log("OTP mail sent:", mailResponse.messageId);
 
     } catch (error) {
-        console.log("error occured while sending mails: ", error);
+        console.log("error occured while sending mails: ", error.message);
         throw error;
     }
 }
@@ -45,8 +43,6 @@ async function sendVerificationEmail(email, otp) {
 
 
 otpSchema.pre("save", async function () {
-    console.log("New document saved to database");
-
     // Only send an email when a new document is created
     if (this.isNew) {
         await sendVerificationEmail(this.email, this.otp);  // object ka data darshata hai        

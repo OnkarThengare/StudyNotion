@@ -3,28 +3,28 @@ require("dotenv").config();
 
 const mailSender = async (email, title, body) => {
     try {
-        let transporter = nodemailer.createTransport({
+        const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
-            port: 587,          // REQUIRED for Gmail
-            secure: false,      // TLS
+            port: 587,
+            secure: false,
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASS,
             }
         });
 
-        let info = await transporter.sendMail({
-            // from: 'StudyNotion || CodeHelp - by OmiiBhai',
-            from: `"StudyNotion" <${process.env.MAIL_USER}>`, //  valid sender
+        const info = await transporter.sendMail({
+            from: `"StudyNotion" <${process.env.MAIL_USER}>`,
             to: `${email}`,
             subject: `${title}`,
             html: `${body}`
         });
-        console.log("Mail Send", error);
+        console.log("Mail sent:", info.messageId);
         return info;
 
     } catch (error) {
-        console.log("Error occured  while sending Mail: ", error.message);
+        console.log("Error occured while sending mail:", error.message);
+        throw error;
     }
 };
 

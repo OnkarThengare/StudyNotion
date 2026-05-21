@@ -9,7 +9,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.updateProfile = async (req, res) => {
     try {
         //Get Data 
-        const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
+        const { dateOfBirth = "", about = "", contactNumber } = req.body;
 
         // Get UserId
         const id = req.user.id;
@@ -18,7 +18,7 @@ exports.updateProfile = async (req, res) => {
         const userDetails = await User.findById(id);
         const profile = await Profile.findById(userDetails.additionalDetails);
 
-        // Update Profile
+        // Update Profile fields
         profile.dateOfBirth = dateOfBirth;
         profile.about = about;
         profile.contactNumber = contactNumber;
@@ -102,8 +102,6 @@ exports.deleteAccount = async (req, res) => {
             message: 'User deleted successfully',
         })
 
-
-
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -116,7 +114,6 @@ exports.deleteAccount = async (req, res) => {
 
 exports.getAllUserDetails = async (req, res) => {
     try {
-
         // get id
         const id = req.user.id;
 

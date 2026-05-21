@@ -34,7 +34,7 @@ const Home = () => {
 
                 <div className="mt-7 text-4xl font-semibold text-center">
                     Empower Your Future with {" "}
-                    <HighlightText text="Coding Skills" />
+                    <HighlightText text={"Coding Skills"} />
                 </div>
 
                 <div className='mt-4 w-[90%] text-center text-lg font-bold text-richblack-300'>
@@ -175,7 +175,7 @@ const Home = () => {
                                 The modern StudyNotion is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.
                             </div>
 
-                            <CTAButton active={true} linkto={"/singup"}>
+                            <CTAButton active={true} linkto={"/signup"}>
                                 <div>
                                     Learn More
                                 </div>

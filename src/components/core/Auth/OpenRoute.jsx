@@ -1,6 +1,6 @@
 // This will prevent authenticated users from accessing this route
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import React from 'react'
 
 function OpenRoute({ children }) {

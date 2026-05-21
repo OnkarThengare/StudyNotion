@@ -65,8 +65,8 @@ const cartSlice = createSlice({
 
         resetCart: (state) => {
             state.cart = []
-                state.total = 0
-                state.totalItems = 0
+            state.total = 0
+            state.totalItems = 0
 
             // Update to localStorage
             localStorage.removeItem("cart")
